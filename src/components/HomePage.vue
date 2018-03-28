@@ -166,14 +166,18 @@ export default {
           console.log(file.url());
           this.img.src = file.url()
           this.img.onload = ()=> {
-          let rgb = this.colorfulImg(this.img)
-          this.rgb = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
-          document.body.style.backgroundColor = this.rgb
-          color.style.background = this.rgb
-          color.style.color = this.rgb
-          this.loading = false
-          this.imgShow = true
+            let rgb = this.colorfulImg(this.img)
+            this.rgb = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
+            document.body.style.backgroundColor = this.rgb
+            color.style.background = this.rgb
+            color.style.color = this.rgb
+            this.loading = false
+            this.imgShow = true
           } 
+          this.img.onerror = ()=>{
+            console.log('error')
+            this.getImg()
+          }
         }, function(error) {
           // 异常处理
           console.error(error);
