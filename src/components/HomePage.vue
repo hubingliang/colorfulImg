@@ -35,7 +35,11 @@
             <use xlink:href="#icon-left"></use>
         </svg>Click it to get the main color from the picture</div>
       <div class="Dominant">Dominant Color :</div>
-      <div id="color">{{ rgb }}</div>
+      
+      <div class="colorBox">
+        <div id="color"></div>
+        <div class="rgb">{{ rgb }}</div>
+      </div>
       <div class="imgFile">
         <input type="file" id="photoFileUpload" @change="saveImg"/>
         <div class="saveImgButton" id="dropArea">UP AN IMAGE HERE</div>
@@ -232,11 +236,20 @@ export default {
         margin-right: 5px;
       }
     }
-    #color{
+    .colorBox{
+      display: flex;
+      align-items: center;
       margin-top: 20px;
-      width: 100px;
-      height: 50px;
-      overflow: hidden;
+      #color{
+        width: 100px;
+        height: 50px;
+        overflow: hidden;
+      }
+      .rgb{
+        margin-left: 40px;
+        height: 50px;
+        line-height: 50px;
+      }
     }
     .imgFile{
       margin: 40px 0;
