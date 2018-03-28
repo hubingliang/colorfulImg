@@ -30,9 +30,17 @@
       </a>
       <img src="https://i.loli.net/2018/03/27/5aba29b5b97ae.png" alt="" class="author">
       <div class="title">ColorfulImg</div>
-      <div class="describe">← Click it to get the main color from the picture</div>
+      <div class="describe">
+        <svg aria-hidden="true" class="left">
+            <use xlink:href="#icon-left"></use>
+        </svg>Click it to get the main color from the picture</div>
       <div class="Dominant">Dominant Color :</div>
       <div id="color">{{ rgb }}</div>
+      <div class="imgFile">
+        <input type="file" id="photoFileUpload" @change="saveImg"/>
+        <div class="saveImgButton" id="dropArea">UP AN IMAGE HERE</div>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -42,6 +50,7 @@ export default {
   name: 'HelloWorld',
   mounted(){
     this.getImg()
+    this.AV()
   },
   data () {
     return {
@@ -54,6 +63,15 @@ export default {
     }
   },
   methods:{
+    AV: function(){
+      var APP_ID = 'q5jefOUBfRK7nH0c2WffAelE-gzGzoHsz';
+      var APP_KEY = 'fUx4cMaaaRO5fuwDzR3P0gIi';
+
+      AV.init({
+        appId: APP_ID,
+        appKey: APP_KEY
+      });
+    },
     getImg: function(){
       let i = Math.floor(Math.random()*(1000+1))
       let color = document.getElementById('color')
@@ -67,6 +85,7 @@ export default {
         this.imgShow = true
         let rgb = this.colorfulImg(this.img)
         this.rgb = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
+        this.inverseRgb = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
         document.body.style.backgroundColor = this.rgb
         color.style.background = this.rgb
         color.style.color = this.rgb
@@ -118,15 +137,46 @@ export default {
       return rgb;
     },
     copyColor: function(){
-      let rgb = document.getElementById("color").innerHTML
-      var oInput = document.createElement('input');
-      oInput.value = rgb;
-      document.body.appendChild(oInput);
-      oInput.select(); // 选择对象
-      document.execCommand("Copy"); // 执行浏览器复制命令
-      oInput.className = 'oInput';
-      oInput.style.display='none';
-    }
+      let input = document.createElement('input');
+      let rgb = document.getElementById("color").innerText
+      input.value = 'ssdsds'
+      document.body.appendChild(input);
+      input.select(); // 选择对象
+      document.execCommand("copy");
+      console.log(document.execCommand("copy"))
+      input.className = 'input';
+      input.style.display='none';
+    },
+    saveImg: function(){
+      let color = document.getElementById('color')
+      this.loading = true
+      this.imgShow = false
+      var fileUploadControl = document.getElementById('photoFileUpload')
+      if (fileUploadControl.files.length > 0) {
+        var localFile = fileUploadControl.files[0];
+        var name = 'avatar.jpg';
+
+        var file = new AV.File(name, localFile);
+        file.save().then((file)=> {
+          // 文件保存成功
+          console.log(file.url());
+          this.img.src = file.url()
+          this.img.onload = ()=> {
+          let rgb = this.colorfulImg(this.img)
+          this.rgb = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')'
+          document.body.style.backgroundColor = this.rgb
+          color.style.background = this.rgb
+          color.style.color = this.rgb
+          this.loading = false
+          this.imgShow = true
+          } 
+        }, function(error) {
+          // 异常处理
+          console.error(error);
+        });
+      }
+    },
+   
   }
 }
 </script>
@@ -143,6 +193,10 @@ export default {
     align-items: center;
     width: 580px;
     height: 600px;
+    img{
+      width: 580px;
+      height: 600px;
+    }
   }
   .color{
     background: rgb(253, 245, 237);
@@ -168,15 +222,43 @@ export default {
     }
     .describe{
       margin-bottom: 20px;
-    }
-    .Dominant{
-
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .left{
+        width: 15px;
+        height: 15px;
+        color: black;
+        margin-right: 5px;
+      }
     }
     #color{
       margin-top: 20px;
       width: 100px;
       height: 50px;
       overflow: hidden;
+    }
+    .imgFile{
+      margin: 40px 0;
+      width: 250px;
+      height: 50px;
+      position: relative;
+      .saveImgButton{
+        width: 250px;
+        height: 50px;
+        background: rgb(9, 19, 35);
+        border-radius: 20px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #photoFileUpload{
+        width: 250px;
+        height: 50px;
+        opacity: 0;
+        position: absolute;
+      }
     }
   }
 }
