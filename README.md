@@ -2,6 +2,8 @@
 
 > 用canvas获取图片主题色！
 
+[ColorfulImg](https://hubingliang.github.io/colorfulImg/dist/)
+
 ## 基本操作
 
 ### 获取图片的主题色

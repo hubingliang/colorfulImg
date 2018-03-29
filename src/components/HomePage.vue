@@ -111,7 +111,6 @@ export default {
           rgb = {r:0,g:0,b:0},
           count = 0
       
-      imgEl.crossorigin = ''
       if (!context) {
           return defaultRGB;
       }
