@@ -81,7 +81,6 @@ export default {
       let color = document.getElementById('color')
       this.img = document.getElementById('img')
       this.imgUrl = `https://picsum.photos/580/600/?image=${i}`
-      //this.imgUrl = `https://picsum.photos/580/600?random`
       this.loading = true
       this.imgShow = false
       this.img.onload = ()=> {
@@ -93,7 +92,6 @@ export default {
         document.body.style.backgroundColor = this.rgb
         color.style.background = this.rgb
         color.style.color = this.rgb
-        this.copyColor()
       }
       this.img.onerror = ()=>{
         console.log('error')
@@ -111,7 +109,9 @@ export default {
           i = -4,
           length,
           rgb = {r:0,g:0,b:0},
-          count = 0;
+          count = 0
+      
+      imgEl.crossorigin = ''
       if (!context) {
           return defaultRGB;
       }
@@ -124,7 +124,6 @@ export default {
           /* security error, img on diff domain */alert('x');
           return defaultRGB;
       }
-      console.log
       length = data.data.length;
       while ( (i += blockSize * 4) < length ) {
           ++count;
@@ -132,24 +131,11 @@ export default {
           rgb.g += data.data[i+1];
           rgb.b += data.data[i+2];
       }
-
       // ~~ used to floor values
       rgb.r = ~~(rgb.r/count);
       rgb.g = ~~(rgb.g/count);
       rgb.b = ~~(rgb.b/count);
-
       return rgb;
-    },
-    copyColor: function(){
-      let input = document.createElement('input');
-      let rgb = document.getElementById("color").innerText
-      input.value = 'ssdsds'
-      document.body.appendChild(input);
-      input.select(); // 选择对象
-      document.execCommand("copy");
-      console.log(document.execCommand("copy"))
-      input.className = 'input';
-      input.style.display='none';
     },
     saveImg: function(){
       let color = document.getElementById('color')
